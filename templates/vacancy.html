@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Изменить Вакансию</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            outline: none;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100">
+    <div class="flex flex-col min-h-screen">
+        <header class="bg-gray-800 text-white">
+            <div class="container mx-auto flex justify-between items-center p-4">
+                <a href="/" class="flex items-center">
+                    <img src="your_logo_path.svg" alt="Logo" class="h-8 mr-2">
+                    <!-- Путь к вашему логотипу -->
+                    <span class="text-lg font-semibold">Название Компании</span>
+                </a>
+                <button id="menuBtn" class="md:hidden block">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                </button>
+                <nav class="hidden md:flex space-x-4">
+                    <a href="/companies" class="hover:text-gray-300 transition duration-300">Компании</a>
+                    <a href="/vacancies" class="hover:text-gray-300 transition duration-300">Вакансии</a>
+                    <a href="/login" class="hover:text-gray-300 transition duration-300">Войти</a>
+                    <a href="/register" class="hover:text-gray-300 transition duration-300">Зарегистрироваться</a>
+                    <a href="/profile" class="hover:text-gray-300 transition duration-300">Личный кабинет</a>
+                </nav>
+            </div>
+            <!-- Мобильное меню -->
+            <div id="mobileMenu" class="hidden bg-gray-800 md:hidden">
+                <a href="/companies" class="block hover:text-gray-300 transition duration-300 p-4">Компании</a>
+                <a href="/vacancies" class="block hover:text-gray-300 transition duration-300 p-4">Вакансии</a>
+                <a href="/login" class="block hover:text-gray-300 transition duration-300 p-4">Войти</a>
+                <a href="/register" class="block hover:text-gray-300 transition duration-300 p-4">Зарегистрироваться</a>
+                <a href="/profile" class="block hover:text-gray-300 transition duration-300 p-4">Личный кабинет</a>
+            </div>
+        </header>
+        <main class="flex-grow container mx-auto px-4 py-8">
+            <section class="p-4">
+                <div class="container mx-auto">
+                    <h2 class="text-2xl font-semibold mb-4">Создать вакансию</h2>
+                    <form method="POST" action="{% url 'create_vacancy' %}" class="space-y-4">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="bg-emerald-700 text-white p-2 rounded hover:bg-emerald-500 transition">Создать
+                            вакансию
+                        </button>
+                    </form>
+                </div>
+            </section>
+            <section class="p-4">
+                <div class="container mx-auto">
+                    <h2 class="text-2xl font-semibold mb-4">Существующие вакансии</h2>
+                    <div class="space-y-4">
+                        {% for vacancy in vacancies %}
+                        <div class="p-4 border rounded flex justify-between items-center">
+                            <div>
+                                <h3 class="font-semibold">{{ vacancy.title }}</h3>
+                                <p class="text-sm">Описание: {{ vacancy.description }}</p>
+                                <p class="text-sm">Зарплата: {{ vacancy.salary }}</p>
+                            </div>
+                            <div>
+                                <a href="{% url 'edit_vacancy' vacancy.id %}" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition">Редактировать</a>
+                                <a href="{% url 'delete_vacancy' vacancy.id %}" class="bg-red-500 text-white p-2 rounded hover:bg-red-600 transition">Удалить</a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
+        </main>
+        <footer class="bg-gray-800 text-white text-center p-4">
+            © 2024 Название компании. Все права защищены.
+        </footer>
+    </div>
+    <script>
+        document.getElementById('menuBtn').addEventListener('click', function () {
+            document.getElementById('mobileMenu').classList.toggle('hidden');
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Домашняя страница</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            outline: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="flex flex-col min-h-screen">
+        <header class="bg-gray-800 text-white">
+            <div class="container mx-auto flex justify-between items-center p-4">
+                <a href="/" class="flex items-center">
+                    <img src="your_logo_path.svg" alt="Логотип" class="h-8 mr-2">
+                    <span class="text-lg font-semibold">Название Компании</span>
+                </a>
+                <button id="menuBtn" class="md:hidden block">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                </button>
+                <nav class="hidden md:flex space-x-4">
+                    <a href="/companies" class="hover:text-gray-300 transition duration-300">Компании</a>
+                    <a href="/vacancies" class="hover:text-gray-300 transition duration-300">Вакансии</a>
+                    <a href="/login" class="hover:text-gray-300 transition duration-300">Войти</a>
+                    <a href="/register" class="hover:text-gray-300 transition duration-300">Зарегистрироваться</a>
+                    <a href="/profile" class="hover:text-gray-300 transition duration-300">Личный кабинет</a>
+                </nav>
+            </div>
+            <!-- Мобильное меню -->
+            <div id="mobileMenu" class="hidden bg-gray-800 md:hidden">
+                <a href="/companies" class="block hover:text-gray-300 transition duration-300 p-4">Компании</a>
+                <a href="/vacancies" class="block hover:text-gray-300 transition duration-300 p-4">Вакансии</a>
+                <a href="/login" class="block hover:text-gray-300 transition duration-300 p-4">Войти</a>
+                <a href="/register" class="block hover:text-gray-300 transition duration-300 p-4">Зарегистрироваться</a>
+                <a href="/profile" class="block hover:text-gray-300 transition duration-300 p-4">Личный кабинет</a>
+            </div>
+        </header>
+        <main class="flex-grow">
+            <section class="py-8 px-4">
+                <div class="container mx-auto bg-white rounded-lg shadow p-4">
+                    <h2 class="text-xl font-semibold mb-4">Фильтры поиска</h2>
+                    <form method="GET" action="{% url 'home' %}">
+                        <div class="mb-4">
+                            <label for="keyword" class="block text-sm font-medium text-gray-700">Ключевое слово</label>
+                            <input
+                                type="text"
+                                id="keyword"
+                                name="keyword"
+                                value="{{ keyword }}"
+                                placeholder="Например, Frontend"
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm px-4 py-2"
+                            >
+                        </div>
+                        <div class="mb-4">
+                            <label for="location" class="block text-sm font-medium text-gray-700">Местоположение</label>
+                            <input
+                                type="text"
+                                id="location"
+                                name="location"
+                                value="{{ location }}"
+                                placeholder="Город или регион"
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm px-4 py-2"
+                            >
+                        </div>
+                        <div class="mb-4">
+                            <label for="salary" class="block text-sm font-medium text-gray-700">Зарплата (от)</label>
+                            <input
+                                type="number"
+                                id="salary"
+                                name="salary"
+                                value="{{ salary }}"
+                                placeholder="от"
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm px-4 py-2"
+                            >
+                        </div>
+                        <div class="mb-4">
+                            <label for="industry" class="block text-sm font-medium text-gray-700">Отрасль</label>
+                            <select
+                                id="industry"
+                                name="industry"
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm px-4 py-2"
+                            >
+                                <option value="">Любая</option>
+                                <option value="it" {% if industry == 'it' %}selected{% endif %}>IT</option>
+                                <option value="marketing" {% if industry == 'marketing' %}selected{% endif %}>Маркетинг</option>
+                                <option value="construction" {% if industry == 'construction' %}selected{% endif %}>Строительство</option>
+                                <!-- Добавьте другие отрасли по необходимости -->
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label for="employmentType" class="block text-sm font-medium text-gray-700">Тип занятости</label>
+                            <select
+                                id="employmentType"
+                                name="employmentType"
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm px-4 py-2"
+                            >
+                                <option value="">Любой</option>
+                                <option value="full-time" {% if employment_type == 'full-time' %}selected{% endif %}>Полная занятость</option>
+                                <option value="part-time" {% if employment_type == 'part-time' %}selected{% endif %}>Частичная занятость</option>
+                                <option value="project" {% if employment_type == 'project' %}selected{% endif %}>Проектная работа</option>
+                                <option value="internship" {% if employment_type == 'internship' %}selected{% endif %}>Стажировка</option>
+                            </select>
+                        </div>
+                        <div>
+                            <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none">
+                                Найти вакансии
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+            <section class="py-8 px-4">
+                <div class="container mx-auto">
+                    <h2 class="text-2xl font-semibold mb-6">Открытые вакансии</h2>
+                    <div class="flex flex-col gap-6">
+                        <!-- Отображение вакансий -->
+                        {% for vacancy in vacancies %}
+                        <div class="border rounded-lg p-4 shadow-lg bg-white">
+                            <h3 class="font-semibold text-lg">{{ vacancy.title }}</h3>
+                            <p class="text-gray-800">
+                                Компания:
+                                <span class="font-medium">{{ vacancy.company.name }}</span>
+                            </p>
+                            <p class="text-gray-800">
+                                Местоположение:
+                                <span class="font-medium">{{ vacancy.company.owner.location }}</span>
+                            </p>
+                            <p class="text-gray-800">
+                                Зарплата:
+                                <span class="font-medium">{{ vacancy.salary }}</span>
+                            </p>
+                            <button class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                <a href="{% url 'vacancy_detail' vacancy.id %}">Подробнее</a>
+                            </button>
+                            <button class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                Откликнуться
+                            </button>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
+        </main>
+        <footer class="bg-gray-800 text-white text-center p-4">
+            © 2024 Название компании. Все права защищены.
+        </footer>
+    </div>
+    <script>
+        document.getElementById('menuBtn').addEventListener('click', function() {
+            document.getElementById('mobileMenu').classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>
